@@ -8,7 +8,7 @@
 
 body
 {
-	background: #f0f0f0;
+	background: #000;
 	margin: 0; padding: 0;
 	overflow: hidden;
 }
@@ -21,9 +21,9 @@ body
 	right: 0; bottom: 0;
 	background: #fff;
 	padding: 4em 1em 0;
-	font: 24pt sans-serif; color: #111;
+	font: 16pt sans-serif; color: #111;
 	font-weight: lighter;
-	letter-spacing: .4em;
+	letter-spacing: .2em;
 	line-height: 150%;
 	text-align: center;
 	text-transform: uppercase;
@@ -49,93 +49,218 @@ var requestAnimFrame =
 		},
 	resources = {
 		surfaceEmpty:{
-			rect: {/*surface-empty*/x:134,y:2,w:128,h:128},
+			rect: {/*surface-empty*/x:266,y:2,w:128,h:128},
+		},
+		surfaceStones:{
+			blocks: true,
+			rect: {/*surface-stones*/x:2,y:2,w:128,h:128},
 		},
 		surfaceEntry:{
-			rect: {/*surface-entry*/x:2,y:2,w:128,h:128},
+			rect: {/*surface-entry*/x:134,y:2,w:128,h:128},
 		},
 		surfaceAstronautDownStand:{
-			rect: {/*surface-astronaut-down-stand*/x:1319,y:2,w:40,h:84},
+			rect: {/*surface-astronaut-down-stand*/x:971,y:134,w:40,h:84},
+		},
+		surfaceAstronautDownWalk0:{
+			rect: {/*surface-astronaut-down-walk0*/x:1058,y:134,w:39,h:80},
 		},
 		surfaceAstronautDownWalk1:{
-			rect: {/*surface-astronaut-down-walk1*/x:1406,y:2,w:39,h:80},
-		},
-		surfaceAstronautDownWalk2:{
-			rect: {/*surface-astronaut-down-walk2*/x:1363,y:2,w:39,h:81},
+			rect: {/*surface-astronaut-down-walk1*/x:1015,y:134,w:39,h:81},
 		},
 		surfaceAstronautUpStand:{
-			rect: {/*surface-astronaut-up-stand*/x:1275,y:2,w:40,h:86},
+			rect: {/*surface-astronaut-up-stand*/x:927,y:134,w:40,h:86},
+		},
+		surfaceAstronautUpWalk0:{
+			rect: {/*surface-astronaut-up-walk0*/x:883,y:134,w:40,h:86},
 		},
 		surfaceAstronautUpWalk1:{
-			rect: {/*surface-astronaut-up-walk1*/x:1231,y:2,w:40,h:86},
+			rect: {/*surface-astronaut-up-walk1*/x:838,y:134,w:41,h:86},
 		},
-		surfaceAstronautUpWalk2:{
-			rect: {/*surface-astronaut-up-walk2*/x:1186,y:2,w:41,h:86},
+		surfaceAstronautRightWalk0:{
+			rect: {/*surface-astronaut-right-walk0*/x:1101,y:134,w:37,h:76},
 		},
 		surfaceAstronautRightWalk1:{
-			rect: {/*surface-astronaut-right-walk1*/x:1449,y:2,w:37,h:76},
+			rect: {/*surface-astronaut-right-walk1*/x:1142,y:134,w:33,h:74},
 		},
-		surfaceAstronautRightWalk2:{
-			rect: {/*surface-astronaut-right-walk2*/x:1490,y:2,w:40,h:74},
+		surfaceAstronautLeftWalk0:{
+			mirror: true,
+			rect: {/*surface-astronaut-right-walk0*/x:1101,y:134,w:37,h:76},
 		},
 		surfaceAstronautLeftWalk1:{
 			mirror: true,
-			rect: {/*surface-astronaut-right-walk1*/x:1449,y:2,w:37,h:76},
-		},
-		surfaceAstronautLeftWalk2:{
-			mirror: true,
-			rect: {/*surface-astronaut-right-walk2*/x:1490,y:2,w:40,h:74},
+			rect: {/*surface-astronaut-right-walk1*/x:1142,y:134,w:33,h:74},
 		},
 		beneathAstronautRightStand:{
-			rect: {/*beneath-astronaut-right-stand*/x:1135,y:2,w:47,h:111},
+			rect: {/*beneath-astronaut-right-stand*/x:795,y:134,w:39,h:92},
+		},
+		beneathAstronautRightWalk0:{
+			rect: {/*beneath-astronaut-right-walk0*/x:1982,y:2,w:40,h:94},
 		},
 		beneathAstronautRightWalk1:{
-			rect: {/*beneath-astronaut-right-walk1*/x:926,y:2,w:48,h:112},
+			rect: {/*beneath-astronaut-right-walk1*/x:662,y:134,w:43,h:92},
 		},
 		beneathAstronautRightWalk2:{
-			rect: {/*beneath-astronaut-right-walk2*/x:978,y:2,w:51,h:111},
+			rect: {/*beneath-astronaut-right-walk2*/x:752,y:134,w:39,h:92},
 		},
 		beneathAstronautRightWalk3:{
-			rect: {/*beneath-astronaut-right-walk3*/x:1084,y:2,w:47,h:111},
-		},
-		beneathAstronautRightWalk4:{
-			rect: {/*beneath-astronaut-right-walk4*/x:1033,y:2,w:47,h:111},
+			rect: {/*beneath-astronaut-right-walk3*/x:709,y:134,w:39,h:92},
 		},
 		beneathAstronautLeftStand:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-stand*/x:1135,y:2,w:47,h:111},
+			rect: {/*beneath-astronaut-right-stand*/x:795,y:134,w:39,h:92},
+		},
+		beneathAstronautLeftWalk0:{
+			mirror: true,
+			rect: {/*beneath-astronaut-right-walk0*/x:1982,y:2,w:40,h:94},
 		},
 		beneathAstronautLeftWalk1:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-walk1*/x:926,y:2,w:48,h:112},
+			rect: {/*beneath-astronaut-right-walk1*/x:662,y:134,w:43,h:92},
 		},
 		beneathAstronautLeftWalk2:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-walk2*/x:978,y:2,w:51,h:111},
+			rect: {/*beneath-astronaut-right-walk2*/x:752,y:134,w:39,h:92},
 		},
 		beneathAstronautLeftWalk3:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-walk3*/x:1084,y:2,w:47,h:111},
+			rect: {/*beneath-astronaut-right-walk3*/x:709,y:134,w:39,h:92},
 		},
-		beneathAstronautLeftWalk4:{
-			mirror: true,
-			rect: {/*beneath-astronaut-right-walk4*/x:1033,y:2,w:47,h:111},
+		beneathEntry:{
+			rect: {/*beneath-entry*/x:1454,y:2,w:128,h:128},
 		},
 		beneathCorridor:{
-			rect: {/*beneath-corridor*/x:794,y:2,w:128,h:128},
+			rect: {/*beneath-corridor*/x:1850,y:2,w:128,h:128},
 		},
-		beneathEdgeBottomLeft:{
-			rect: {/*beneath-edge-bottom-left*/x:662,y:2,w:128,h:128},
+		beneathCorridorTopLeft:{
+			rect: {/*beneath-corridor-top-left*/x:134,y:134,w:128,h:128},
 		},
-		beneathEdgeTopLeft:{
-			rect: {/*beneath-edge-top-left*/x:530,y:2,w:128,h:128},
+		beneathCorridorTopRight:{
+			rect: {/*beneath-corridor-top-right*/x:2,y:134,w:128,h:128},
 		},
-		beneathWallBottomLeft:{
-			rect: {/*beneath-wall-bottom-left*/x:398,y:2,w:128,h:128},
+		beneathCorridorLeftRight:{
+			rect: {/*beneath-corridor-left-right*/x:398,y:134,w:128,h:128},
 		},
-		beneathWallTopRight:{
-			rect: {/*beneath-wall-top-right*/x:266,y:2,w:128,h:128},
+		beneathCorridorLeftEnd:{
+			blocks: true,
+			rect: {/*beneath-corridor-left-end*/x:530,y:134,w:128,h:128},
+		},
+		beneathCorridorRightEnd:{
+			blocks: true,
+			rect: {/*beneath-corridor-right-end*/x:266,y:134,w:128,h:128},
+		},
+		beneathDropLeft:{
+			rect: {/*beneath-drop-left*/x:1718,y:2,w:128,h:128},
+		},
+		beneathDropRight:{
+			rect: {/*beneath-drop-right*/x:1586,y:2,w:128,h:128},
+		},
+		beneathWallTop:{
+			blocks: true,
+			rect: {/*beneath-wall-top*/x:398,y:2,w:128,h:128},
+		},
+		beneathWallBottom:{
+			blocks: true,
+			rect: {/*beneath-wall-bottom*/x:1322,y:2,w:128,h:128},
+		},
+		beneathWallLeft:{
+			blocks: true,
+			rect: {/*beneath-wall-left*/x:926,y:2,w:128,h:128},
+		},
+		beneathWallLeftTop:{
+			blocks: true,
+			rect: {/*beneath-wall-left-top*/x:1058,y:2,w:128,h:128},
+		},
+		beneathWallLeftBottom:{
+			blocks: true,
+			rect: {/*beneath-wall-left-bottom*/x:1190,y:2,w:128,h:128},
+		},
+		beneathWallRight:{
+			blocks: true,
+			rect: {/*beneath-wall-right*/x:530,y:2,w:128,h:128},
+		},
+		beneathWallRightTop:{
+			blocks: true,
+			rect: {/*beneath-wall-right-top*/x:662,y:2,w:128,h:128},
+		},
+		beneathWallRightBottom:{
+			blocks: true,
+			rect: {/*beneath-wall-right-bottom*/x:794,y:2,w:128,h:128},
 		} },
+	levels = [
+		{
+			sideView: false,
+			cols: 16,
+			rows: 16,
+			x: 7,
+			y: 7,
+			map: [
+				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+				0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+				0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0,
+				0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+				0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+				0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0,
+				0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0,
+				0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			symbols: [
+				/*0*/"surfaceEmpty",
+				/*1*/"surfaceStones",
+				/*2*/"surfaceEntry"],
+			actions: [
+				/*0*/null,
+				/*1*/null,
+				/*2*/function( col, row )
+				{
+					loadLevel( {
+						sideView: true,
+						cols: 6,
+						rows: 6,
+						x: 1,
+						y: 0,
+						map: [
+							1, 2, 8,10,16, 0,
+							0, 0,12, 7,15, 0,
+							0, 0,12, 7,15, 0,
+							0, 0,14,11,17, 0,
+							0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0],
+						symbols: [
+							/*00*/null,
+							/*01*/"beneathEntry",
+							/*02*/"beneathCorridorLeftRight",
+							/*03*/"beneathCorridorLeftEnd",
+							/*04*/"beneathCorridorRightEnd",
+							/*05*/"beneathCorridorTopLeft",
+							/*06*/"beneathCorridorTopRight",
+							/*07*/"beneathCorridor",
+							/*08*/"beneathDropLeft",
+							/*09*/"beneathDropRight",
+							/*10*/"beneathWallTop",
+							/*11*/"beneathWallBottom",
+							/*12*/"beneathWallLeft",
+							/*13*/"beneathWallLeftTop",
+							/*14*/"beneathWallLeftBottom",
+							/*15*/"beneathWallRight",
+							/*16*/"beneathWallRightTop",
+							/*17*/"beneathWallRightBottom"],
+						actions: [
+							/*0*/null,
+							/*1*/function()
+							{
+								loadLevel( levels[0], col, row );
+							}]
+					} );
+				}]
+		}
+		],
 	message,
 	atlas,
 	sprites = {},
@@ -156,27 +281,50 @@ var requestAnimFrame =
 	pointerSet = false,
 	keysDown = [],
 	map = [],
-	mapCols = 5,
-	mapRows = 5,
-	mapCells = mapCols*mapRows,
+	mapCols,
+	mapRows,
+	mapCells,
+	mapSideView,
 	mapWidth,
 	mapHeight,
+	mapLeft,
+	mapTop,
 	playerCol,
 	playerRow,
 	playerVx,
 	playerVy,
-	playerWalk = 1,
+	playerFallSpeed = 0,
+	playerWalk = 0,
 	playerWalkLast = 0,
 	playerWalkFrequency = 96,
 	playerSize,
 	playerSizeInMap,
 	step = .0625;
 
+function enter()
+{
+	var idx = (playerRow | 0)*mapCols+(playerCol | 0),
+		field = map[idx];
+
+	if( field.action )
+		field.action( playerCol, playerRow-1 );
+}
+
 function cell( col, row )
 {
 	var idx = (row | 0)*mapCols+(col | 0);
 
-	return idx < mapCells ? !map[idx].blocks : false;
+	if( idx < mapCells )
+	{
+		var field = map[idx];
+
+		if( !field )
+			return false;
+
+		return !field.blocks;
+	}
+
+	return false;
 }
 
 function canMoveTo( col, row )
@@ -205,17 +353,16 @@ function moveToBorder( col, row )
 		playerRow = (playerRow | 0)+(.99-playerSizeInMap);
 }
 
-function moveToPointer( mapLeft, mapTop )
+function moveTo( col, row )
 {
-	var col = (pointerX-mapLeft)/cellSize,
-		row = (pointerY-mapTop)/cellSize;
-
 	if( col < playerSizeInMap )
 		col = playerSizeInMap;
 	else if( col > mapCols-playerSizeInMap )
 		col = mapCols-playerSizeInMap;
 
-	if( row < playerSizeInMap )
+	if( playerFallSpeed )
+		row = playerRow;
+	else if( row < playerSizeInMap )
 		row = playerSizeInMap;
 	else if( row > mapRows-playerSizeInMap )
 		row = mapRows-playerSizeInMap;
@@ -224,7 +371,7 @@ function moveToPointer( mapLeft, mapTop )
 		dy = row-playerRow,
 		x = playerCol,
 		y = playerRow,
-		s = step;
+		s = step*factor;
 
 	if( Math.abs( dx ) > s )
 		dx = dx > 0 ? s : -s;
@@ -233,7 +380,9 @@ function moveToPointer( mapLeft, mapTop )
 		dy = dy > 0 ? s : -s;
 
 	x += dx;
-	y += dy;
+
+	if( !mapSideView )
+		y += dy;
 
 	if( canMoveTo( x, y ) )
 	{
@@ -278,16 +427,16 @@ function drawPlayer( x, y )
 	if( (playerVx != 0 || playerVy != 0) &&
 		now-playerWalkLast > playerWalkFrequency )
 	{
-		if( (playerWalk = ++playerWalk % 3) < 1 )
-			playerWalk = 1;
-
+		playerWalk = ++playerWalk % (mapSideView ? 4 : 2);
 		playerWalkLast = now;
 	}
 
-	if( playerVx != 0 )
+	if( mapSideView || playerVx != 0 )
 	{
 		if( playerVx == 0 )
-			sprite = "DownStand";
+			sprite = mapSideView ?
+				"LeftStand" :
+				"DownStand";
 		else if( playerVx > 0 )
 			sprite = "RightWalk"+playerWalk;
 		else
@@ -304,12 +453,14 @@ function drawPlayer( x, y )
 	}
 
 	drawSprite(
-		sprites["surfaceAstronaut"+sprite],
+		sprites[(mapSideView ?
+			"beneathAstronaut" :
+			"surfaceAstronaut")+sprite],
 		x,
 		y );
 }
 
-function drawMap( mapLeft, mapTop )
+function drawMap( left, top )
 {
 	var size = cellSize+1,
 		startCol = 0,
@@ -319,57 +470,57 @@ function drawMap( mapLeft, mapTop )
 		idx = 0,
 		cols = mapCols,
 		rows = mapRows,
-		mapRight = mapLeft+mapWidth,
-		mapBottom = mapTop+mapHeight;
+		right = left+mapWidth,
+		bottom = top+mapHeight;
 
-	if( mapBottom > height )
-		rows -= (mapBottom-height)/cellSize | 0;
+	if( bottom > height )
+		rows -= (bottom-height)/cellSize | 0;
 
 	if( mapTop < 0 )
 	{
-		var invisble = mapTop/-cellSize | 0;
+		var invisble = top/-cellSize | 0;
 
 		idx += invisble*mapCols;
 		y += invisble*cellSize;
 		row += invisble;
 	}
 
-	if( mapRight > width )
+	if( right > width )
 	{
-		var invisible = (mapRight-width)/cellSize | 0;
+		var invisible = (right-width)/cellSize | 0;
 
 		cols -= invisible;
 		skip += invisible;
 	}
 
-	if( mapLeft < 0 )
+	if( left < 0 )
 	{
-		var invisble = mapLeft/-cellSize | 0;
+		var invisble = left/-cellSize | 0;
 
 		skip += invisble;
 		idx += invisble;
 		startCol = invisble;
-		mapLeft += invisble*cellSize;
+		left += invisble*cellSize;
 	}
 
 	for( ;
 		row < rows;
 		++row, y += cellSize, idx += skip )
-		for( var x = mapLeft, col = startCol;
+		for( var x = left, col = startCol;
 			col < cols;
 			++col, x += cellSize, ++idx )
-			ctx.drawImage(
-				map[idx].sprite,
-				x,
-				y );
+		{
+			var sprite = map[idx].sprite;
+
+			if( sprite )
+				ctx.drawImage( sprite, x, y );
+		}
 }
 
 function draw()
 {
 	var playerX = playerCol*cellSize,
-		playerY = playerRow*cellSize,
-		mapLeft,
-		mapTop;
+		playerY = playerRow*cellSize;
 
 	if( mapWidth > width )
 	{
@@ -380,8 +531,6 @@ function draw()
 		else if( mapLeft+mapWidth < width )
 			mapLeft = width-mapWidth;
 	}
-	else
-		mapLeft = width-mapWidth >> 1;
 
 	if( mapHeight > height )
 	{
@@ -392,63 +541,63 @@ function draw()
 		else if( mapTop+mapHeight < height )
 			mapTop = height-mapHeight;
 	}
-	else
-		mapTop = height-mapHeight >> 1;
 
 	ctx.clearRect( 0, 0, width, height );
 
 	drawMap( mapLeft, mapTop );
 
 	if( pointerSet )
-		moveToPointer( mapLeft, mapTop );
+		moveTo(
+			(pointerX-mapLeft)/cellSize,
+			(pointerY-mapTop)/cellSize );
 
 	drawPlayer( mapLeft+playerX, mapTop+playerY );
 }
 
-function moveBy( col, row )
-{
-	if( !canMoveTo( playerCol+col, playerRow+row ) )
-	{
-		moveToBorder( col, row );
-		return;
-	}
-
-	playerVx = col;
-	playerVy = row;
-
-	playerCol += col;
-	playerRow += row;
-
-	var right = mapCols-playerSizeInMap,
-		bottom = mapRows-playerSizeInMap;
-
-	if( playerCol < playerSizeInMap )
-		playerCol = playerSizeInMap;
-	else if( playerCol > right )
-		playerCol = right;
-
-	if( playerRow < playerSizeInMap )
-		playerRow = playerSizeInMap;
-	else if( playerRow > bottom )
-		playerRow = bottom;
-}
-
 function input()
 {
-	var s = step*factor;
-
-	playerVx =
-	playerVy = 0;
+	var s = step*factor,
+		x = 0,
+		y = 0;
 
 	if( keysDown[37] )
-		moveBy( -s, 0 );
+		x -= s;
 	else if( keysDown[39] )
-		moveBy( s, 0 );
+		x += s;
 
 	if( keysDown[38] )
-		moveBy( 0, -s );
+		y -= s;
 	else if( keysDown[40] )
-		moveBy( 0, s );
+		y += s;
+
+	if( mapSideView && y < 0 )
+		playerFallSpeed = -.025;
+
+	if( x || y )
+		moveTo( playerCol+x, playerRow+y );
+}
+
+function gravity()
+{
+	if( !canMoveTo( playerCol, playerRow+1 ) )
+		return;
+
+	if( !playerFallSpeed )
+		playerFallSpeed = .025;
+	else if( playerFallSpeed < 1 )
+		playerFallSpeed = Math.max(
+			playerFallSpeed > 0 ? 1 : -1,
+			playerFallSpeed*1.05 );
+
+	var row = playerRow+playerFallSpeed*factor;
+
+	if( !canMoveTo( playerCol, row ) )
+	{
+		moveToBorder( playerCol, row );
+		playerFallSpeed = 0;
+	}
+	else
+		playerRow = row;
 }
 
 function run()
@@ -457,55 +606,53 @@ function run()
 	factor = (now-last)/16;
 	last = now;
 
+	playerVx =
+	playerVy = 0;
+
+	if( mapSideView )
+		gravity();
+
+	enter();
 	input();
 	draw();
 
 	requestAnimFrame( run );
 }
 
-function generate()
+function loadLevel( level, x, y )
 {
-	var cells = mapCells;
+	var lm = level.map,
+		ls = level.symbols,
+		la = level.actions;
 
 	map.length = 0;
 
-	for( var n = cells; n--; )
-	{
-		var blocks,
-			sprite;
+	mapCols = level.cols;
+	mapRows = level.rows;
+	mapCells = mapCols*mapRows;
+	mapSideView = level.sideView;
 
-		if( Math.random() > .5 )
-		{
-			sprite = sprites.surfaceEmpty;
-			blocks = false;
-		}
-		else
-		{
-			sprite = sprites.surfaceEntry;
-			blocks = true;
-		};
+	playerCol = ((typeof x === "undefined" ? level.x : x) | 0)+.5;
+	playerRow = ((typeof y === "undefined" ? level.y : y) | 0)+
+		(mapSideView ? .6 : .5);
+
+	playerFallSpeed =
+	playerWalk =
+	playerWalkLast = 0;
+
+	mapWidth = mapCols*cellSize;
+	mapHeight = mapRows*cellSize;
+	mapLeft = width-mapWidth >> 1;
+	mapTop = height-mapHeight >> 1;
+
+	for( var n = lm.length; n--; )
+	{
+		var symbol = lm[n],
+			sprite = sprites[ls[symbol]];
 
 		map[n] = {
-			blocks: blocks,
-			sprite: sprite  };
-	}
-
-	--cells;
-
-	for( ;; )
-	{
-		var idx = Math.random()*cells | 0;
-
-		if( map[idx].blocks )
-			continue;
-
-		playerRow = idx/mapCols | 0;
-		playerCol = idx-playerRow*mapCols;
-
-		playerRow += .5;
-		playerCol += .5;
-
-		break;
+			sprite: sprite,
+			action: la[symbol] };
 	}
 }
 
@@ -650,11 +797,8 @@ function resize()
 	playerSize = cellSize*.25 | 0;
 	playerSizeInMap = 1/cellSize*playerSize;
 
-	mapWidth = mapCols*cellSize;
-	mapHeight = mapRows*cellSize;
-
 	scale( w );
-	generate();
+	loadLevel( levels[0] );
 
 	if( message.resizing )
 		message.style.display = "none";
