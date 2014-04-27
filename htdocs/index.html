@@ -1,0 +1,445 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+<title>(LD29)</title>
+<style>
+
+body
+{
+	background: #f0f0f0;
+	margin: 0; padding: 0;
+	overflow: hidden;
+}
+
+</style>
+</head>
+<body>
+<script>
+
+"use strict";
+
+var requestAnimFrame =
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		window.requestAnimationFrame ||
+		function( callback )
+		{
+			window.setTimeout( callback, 16 );
+		},
+	canvas,
+	ctx,
+	ratio,
+	centerX,
+	centerY,
+	width,
+	height,
+	cellSize,
+	pointerX,
+	pointerY,
+	pointerSet = false,
+	keysDown = [],
+	map = [],
+	mapCols = 100,
+	mapRows = 100,
+	mapWidth,
+	mapHeight,
+	playerCol,
+	playerRow,
+	playerRadius,
+	playerRadiusOnMap,
+	step = .0625;
+
+function cell( col, row )
+{
+	return map[(row | 0)*mapCols+(col | 0)] > 0;
+}
+
+function canMoveTo( col, row )
+{
+	var left = col-playerRadiusOnMap,
+		top = row-playerRadiusOnMap,
+		right = col+playerRadiusOnMap,
+		bottom = row+playerRadiusOnMap;
+
+	return cell( left, top ) &&
+		cell( right, top ) &&
+		cell( left, bottom ) &&
+		cell( right, bottom );
+}
+
+function moveToBorder( col, row )
+{
+	if( col < 0 )
+		playerCol = (playerCol | 0)+playerRadiusOnMap+.01;
+	else if( col > 0 )
+		playerCol = (playerCol | 0)+(.99-playerRadiusOnMap);
+
+	if( row < 0 )
+		playerRow = (playerRow | 0)+playerRadiusOnMap+.01;
+	else if( row > 0 )
+		playerRow = (playerRow | 0)+(.99-playerRadiusOnMap);
+}
+
+function moveToPointer( mapLeft, mapTop )
+{
+	var col = (pointerX-mapLeft)/cellSize,
+		row = (pointerY-mapTop)/cellSize;
+
+	if( col < step )
+		col = step;
+	else if( col > mapCols-step )
+		col = mapCols-step;
+
+	if( row < step )
+		row = step;
+	else if( row > mapRows-step )
+		row = mapRows-step;
+
+	var dx = col-playerCol,
+		dy = row-playerRow,
+		x = playerCol,
+		y = playerRow,
+		s = .1;
+
+	if( Math.abs( dx ) > s )
+		x += dx > 0 ? s : -s;
+	else
+		x += dx;
+
+	if( Math.abs( dy ) > s )
+		y += dy > 0 ? s : -s;
+	else
+		y += dy;
+
+	if( canMoveTo( x, y ) )
+	{
+		playerCol = x;
+		playerRow = y;
+	}
+	else if( canMoveTo( x, playerRow ) )
+	{
+		playerCol = x;
+		moveToBorder( 0, dy );
+	}
+	else if( canMoveTo( playerCol, y ) )
+	{
+		playerRow = y;
+		moveToBorder( dx, 0 );
+	}
+	else
+		moveToBorder( dx, dy );
+}
+
+function drawPlayer( x, y )
+{
+	ctx.fillStyle = '#811';
+	ctx.beginPath();
+	ctx.arc( x, y, playerRadius, 0, 6.28, false );
+	ctx.fill();
+}
+
+function drawMap( mapLeft, mapTop )
+{
+	var size = cellSize+1,
+		startCol = 0,
+		skip = 0,
+		y = mapTop,
+		row = 0,
+		idx = 0,
+		cols = mapCols,
+		rows = mapRows,
+		mapRight = mapLeft+mapWidth,
+		mapBottom = mapTop+mapHeight;
+
+	if( mapBottom > height )
+		rows -= (mapBottom-height)/cellSize | 0;
+
+	if( mapTop < 0 )
+	{
+		var invisble = mapTop/-cellSize | 0;
+
+		idx += invisble*mapCols;
+		y += invisble*cellSize;
+		row += invisble;
+	}
+
+	if( mapRight > width )
+	{
+		var invisible = (mapRight-width)/cellSize | 0;
+
+		cols -= invisible;
+		skip += invisible;
+	}
+
+	if( mapLeft < 0 )
+	{
+		var invisble = mapLeft/-cellSize | 0;
+
+		skip += invisble;
+		idx += invisble;
+		startCol = invisble;
+		mapLeft += invisble*cellSize;
+	}
+
+	for( ;
+		row < rows;
+		++row, y += cellSize, idx += skip )
+		for( var x = mapLeft, col = startCol;
+			col < cols;
+			++col, x += cellSize, ++idx )
+		{
+			var color;
+
+			switch( map[idx] )
+			{
+				case 0:
+					color = '#e8e8e8';
+					break;
+				case 1:
+					color = '#f8f8f8';
+					break;
+			}
+
+			ctx.fillStyle = color;
+			ctx.fillRect( x, y, size, size );
+		}
+}
+
+function draw()
+{
+	var playerX = playerCol*cellSize,
+		playerY = playerRow*cellSize,
+		mapLeft = centerX-playerX,
+		mapTop = centerY-playerY;
+
+	if( mapTop > 0 )
+		mapTop = 0;
+	else if( mapTop+mapHeight < height )
+		mapTop = height-mapHeight;
+
+	if( mapLeft > 0 )
+		mapLeft = 0;
+	else if( mapLeft+mapWidth < width )
+		mapLeft = width-mapWidth;
+
+	ctx.clearRect( 0, 0, width, height );
+
+	drawMap( mapLeft, mapTop );
+	drawPlayer( mapLeft+playerX, mapTop+playerY );
+
+	if( pointerSet )
+		moveToPointer( mapLeft, mapTop );
+}
+
+function input()
+{
+	if( keysDown[37] )
+		moveBy( -step, 0 );
+	else if( keysDown[39] )
+		moveBy( step, 0 );
+
+	if( keysDown[38] )
+		moveBy( 0, -step );
+	else if( keysDown[40] )
+		moveBy( 0, step );
+}
+
+function run()
+{
+	input();
+	draw();
+
+	requestAnimFrame( run );
+}
+
+function generate()
+{
+	var cells = mapCols*mapRows;
+
+	for( var n = cells; n--; )
+		map[n] = Math.random()*2 | 0;
+
+	--cells;
+
+	for( ;; )
+	{
+		var idx = Math.random()*cells | 0;
+
+		if( map[idx] != 1 )
+			continue;
+
+		playerRow = idx/mapCols | 0;
+		playerCol = idx-playerRow*mapCols;
+
+		playerRow += .5;
+		playerCol += .5;
+
+		break;
+	}
+}
+
+function moveBy( col, row )
+{
+	if( !canMoveTo( playerCol+col, playerRow+row ) )
+	{
+		moveToBorder( col, row );
+		return;
+	}
+
+	playerCol += col;
+	playerRow += row;
+
+	var right = mapCols-step,
+		bottom = mapRows-step;
+
+	if( playerCol < step )
+		playerCol = step;
+	else if( playerCol > right )
+		playerCol = right;
+
+	if( playerRow < step )
+		playerRow = step;
+	else if( playerRow > bottom )
+		playerRow = bottom;
+}
+
+function setKey( ev, pressed )
+{
+	var e = ev || event;
+
+	keysDown[e.keyCode] = pressed;
+
+	e.preventDefault();
+	return false;
+}
+
+function keyUp( ev )
+{
+	return setKey( ev, false );
+}
+
+function keyDown( ev )
+{
+	return setKey( ev, true );
+}
+
+function setPointer( ev )
+{
+	var e = ev || event;
+
+	if( e.touches )
+	{
+		var t = e.touches[0];
+
+		pointerX = t.pageX;
+		pointerY = t.pageY;
+	}
+	else if( "clientX" in e )
+	{
+		pointerX = e.clientX;
+		pointerY = e.clientY;
+	}
+	else
+	{
+		pointerX = e.pageX;
+		pointerY = e.pageY;
+	}
+}
+
+function pointerUp( ev )
+{
+	pointerSet = false;
+
+	return true;
+}
+
+function pointerMove( ev )
+{
+	setPointer( ev );
+
+	return true;
+}
+
+function pointerDown( ev )
+{
+	setPointer( ev );
+	pointerSet = true;
+
+	return true;
+}
+
+function resize()
+{
+	var w = window.innerWidth,
+		h = window.innerHeight;
+
+	width = w*ratio | 0;
+	height = h*ratio | 0;
+
+	canvas.width = width;
+	canvas.height = height;
+	canvas.style.width = w+"px";
+	canvas.style.height = h+"px";
+
+	centerX = width >> 1;
+	centerY = height >> 1;
+
+	cellSize = Math.min( width, height )/10 | 0;
+	playerRadius = cellSize*.25 | 0;
+	playerRadiusOnMap = 1/cellSize*playerRadius;
+
+	mapWidth = mapCols*cellSize;
+	mapHeight = mapRows*cellSize;
+}
+
+function init()
+{
+	if( !(canvas = document.createElement( "canvas" )) ||
+		!(ctx = canvas.getContext( "2d" )) )
+		return;
+
+	ratio =
+		(window.devicePixelRatio || 1)/
+		(ctx.webkitBackingStorePixelRatio ||
+			ctx.mozBackingStorePixelRatio ||
+			ctx.msBackingStorePixelRatio ||
+			ctx.oBackingStorePixelRatio ||
+			ctx.backingStorePixelRatio ||
+			1);
+
+	window.onresize = resize;
+	resize();
+
+	canvas.onmousedown = pointerDown;
+	canvas.onmousemove = pointerMove;
+	canvas.onmouseup = pointerUp;
+	canvas.onmouseout = pointerUp;
+
+	if( "ontouchstart" in canvas )
+	{
+		canvas.ontouchstart = pointerDown;
+		canvas.ontouchmove = pointerMove;
+		canvas.ontouchend = pointerUp;
+	}
+
+	document.onkeydown = keyDown;
+	document.onkeyup = keyUp;
+	document.body.appendChild( canvas );
+
+	generate();
+	run();
+}
+
+window.onload = function()
+{
+	// give mobile browsers some time to settle on dimensions
+	setTimeout( init, 500 );
+}
+
+</script>
+</body>
+</html>
