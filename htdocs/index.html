@@ -13,9 +13,26 @@ body
 	overflow: hidden;
 }
 
+#Message
+{
+	position: fixed;
+	z-index: 4;
+	left: 0; top: 0;
+	right: 0; bottom: 0;
+	background: #fff;
+	padding: 4em 1em 0;
+	font: 24pt sans-serif; color: #111;
+	font-weight: lighter;
+	letter-spacing: .4em;
+	line-height: 150%;
+	text-align: center;
+	text-transform: uppercase;
+}
+
 </style>
 </head>
 <body>
+<div id="Message">Initializing</div>
 <script>
 
 "use strict";
@@ -30,9 +47,105 @@ var requestAnimFrame =
 		{
 			window.setTimeout( callback, 16 );
 		},
+	resources = {
+		surfaceEmpty:{
+			rect: {/*surface-empty*/x:134,y:2,w:128,h:128},
+		},
+		surfaceEntry:{
+			rect: {/*surface-entry*/x:2,y:2,w:128,h:128},
+		},
+		surfaceAstronautDownStand:{
+			rect: {/*surface-astronaut-down-stand*/x:1319,y:2,w:40,h:84},
+		},
+		surfaceAstronautDownWalk1:{
+			rect: {/*surface-astronaut-down-walk1*/x:1406,y:2,w:39,h:80},
+		},
+		surfaceAstronautDownWalk2:{
+			rect: {/*surface-astronaut-down-walk2*/x:1363,y:2,w:39,h:81},
+		},
+		surfaceAstronautUpStand:{
+			rect: {/*surface-astronaut-up-stand*/x:1275,y:2,w:40,h:86},
+		},
+		surfaceAstronautUpWalk1:{
+			rect: {/*surface-astronaut-up-walk1*/x:1231,y:2,w:40,h:86},
+		},
+		surfaceAstronautUpWalk2:{
+			rect: {/*surface-astronaut-up-walk2*/x:1186,y:2,w:41,h:86},
+		},
+		surfaceAstronautRightWalk1:{
+			rect: {/*surface-astronaut-right-walk1*/x:1449,y:2,w:37,h:76},
+		},
+		surfaceAstronautRightWalk2:{
+			rect: {/*surface-astronaut-right-walk2*/x:1490,y:2,w:40,h:74},
+		},
+		surfaceAstronautLeftWalk1:{
+			mirror: true,
+			rect: {/*surface-astronaut-right-walk1*/x:1449,y:2,w:37,h:76},
+		},
+		surfaceAstronautLeftWalk2:{
+			mirror: true,
+			rect: {/*surface-astronaut-right-walk2*/x:1490,y:2,w:40,h:74},
+		},
+		beneathAstronautRightStand:{
+			rect: {/*beneath-astronaut-right-stand*/x:1135,y:2,w:47,h:111},
+		},
+		beneathAstronautRightWalk1:{
+			rect: {/*beneath-astronaut-right-walk1*/x:926,y:2,w:48,h:112},
+		},
+		beneathAstronautRightWalk2:{
+			rect: {/*beneath-astronaut-right-walk2*/x:978,y:2,w:51,h:111},
+		},
+		beneathAstronautRightWalk3:{
+			rect: {/*beneath-astronaut-right-walk3*/x:1084,y:2,w:47,h:111},
+		},
+		beneathAstronautRightWalk4:{
+			rect: {/*beneath-astronaut-right-walk4*/x:1033,y:2,w:47,h:111},
+		},
+		beneathAstronautLeftStand:{
+			mirror: true,
+			rect: {/*beneath-astronaut-right-stand*/x:1135,y:2,w:47,h:111},
+		},
+		beneathAstronautLeftWalk1:{
+			mirror: true,
+			rect: {/*beneath-astronaut-right-walk1*/x:926,y:2,w:48,h:112},
+		},
+		beneathAstronautLeftWalk2:{
+			mirror: true,
+			rect: {/*beneath-astronaut-right-walk2*/x:978,y:2,w:51,h:111},
+		},
+		beneathAstronautLeftWalk3:{
+			mirror: true,
+			rect: {/*beneath-astronaut-right-walk3*/x:1084,y:2,w:47,h:111},
+		},
+		beneathAstronautLeftWalk4:{
+			mirror: true,
+			rect: {/*beneath-astronaut-right-walk4*/x:1033,y:2,w:47,h:111},
+		},
+		beneathCorridor:{
+			rect: {/*beneath-corridor*/x:794,y:2,w:128,h:128},
+		},
+		beneathEdgeBottomLeft:{
+			rect: {/*beneath-edge-bottom-left*/x:662,y:2,w:128,h:128},
+		},
+		beneathEdgeTopLeft:{
+			rect: {/*beneath-edge-top-left*/x:530,y:2,w:128,h:128},
+		},
+		beneathWallBottomLeft:{
+			rect: {/*beneath-wall-bottom-left*/x:398,y:2,w:128,h:128},
+		},
+		beneathWallTopRight:{
+			rect: {/*beneath-wall-top-right*/x:266,y:2,w:128,h:128},
+		} },
+	message,
+	atlas,
+	sprites = {},
+	now,
+	factor,
+	last,
 	canvas,
 	ctx,
 	ratio,
+	resizeTimer,
 	centerX,
 	centerY,
 	width,
@@ -43,27 +156,35 @@ var requestAnimFrame =
 	pointerSet = false,
 	keysDown = [],
 	map = [],
-	mapCols = 100,
-	mapRows = 100,
+	mapCols = 5,
+	mapRows = 5,
+	mapCells = mapCols*mapRows,
 	mapWidth,
 	mapHeight,
 	playerCol,
 	playerRow,
-	playerRadius,
-	playerRadiusOnMap,
+	playerVx,
+	playerVy,
+	playerWalk = 1,
+	playerWalkLast = 0,
+	playerWalkFrequency = 96,
+	playerSize,
+	playerSizeInMap,
 	step = .0625;
 
 function cell( col, row )
 {
-	return map[(row | 0)*mapCols+(col | 0)] > 0;
+	var idx = (row | 0)*mapCols+(col | 0);
+
+	return idx < mapCells ? !map[idx].blocks : false;
 }
 
 function canMoveTo( col, row )
 {
-	var left = col-playerRadiusOnMap,
-		top = row-playerRadiusOnMap,
-		right = col+playerRadiusOnMap,
-		bottom = row+playerRadiusOnMap;
+	var left = col-playerSizeInMap,
+		top = row-playerSizeInMap,
+		right = col+playerSizeInMap,
+		bottom = row+playerSizeInMap;
 
 	return cell( left, top ) &&
 		cell( right, top ) &&
@@ -74,14 +195,14 @@ function canMoveTo( col, row )
 function moveToBorder( col, row )
 {
 	if( col < 0 )
-		playerCol = (playerCol | 0)+playerRadiusOnMap+.01;
+		playerCol = (playerCol | 0)+playerSizeInMap+.01;
 	else if( col > 0 )
-		playerCol = (playerCol | 0)+(.99-playerRadiusOnMap);
+		playerCol = (playerCol | 0)+(.99-playerSizeInMap);
 
 	if( row < 0 )
-		playerRow = (playerRow | 0)+playerRadiusOnMap+.01;
+		playerRow = (playerRow | 0)+playerSizeInMap+.01;
 	else if( row > 0 )
-		playerRow = (playerRow | 0)+(.99-playerRadiusOnMap);
+		playerRow = (playerRow | 0)+(.99-playerSizeInMap);
 }
 
 function moveToPointer( mapLeft, mapTop )
@@ -89,44 +210,52 @@ function moveToPointer( mapLeft, mapTop )
 	var col = (pointerX-mapLeft)/cellSize,
 		row = (pointerY-mapTop)/cellSize;
 
-	if( col < step )
-		col = step;
-	else if( col > mapCols-step )
-		col = mapCols-step;
+	if( col < playerSizeInMap )
+		col = playerSizeInMap;
+	else if( col > mapCols-playerSizeInMap )
+		col = mapCols-playerSizeInMap;
 
-	if( row < step )
-		row = step;
-	else if( row > mapRows-step )
-		row = mapRows-step;
+	if( row < playerSizeInMap )
+		row = playerSizeInMap;
+	else if( row > mapRows-playerSizeInMap )
+		row = mapRows-playerSizeInMap;
 
 	var dx = col-playerCol,
 		dy = row-playerRow,
 		x = playerCol,
 		y = playerRow,
-		s = .1;
+		s = step;
 
 	if( Math.abs( dx ) > s )
-		x += dx > 0 ? s : -s;
-	else
-		x += dx;
+		dx = dx > 0 ? s : -s;
 
 	if( Math.abs( dy ) > s )
-		y += dy > 0 ? s : -s;
-	else
-		y += dy;
+		dy = dy > 0 ? s : -s;
+
+	x += dx;
+	y += dy;
 
 	if( canMoveTo( x, y ) )
 	{
+		playerVx = dx;
+		playerVy = dy;
+
 		playerCol = x;
 		playerRow = y;
 	}
 	else if( canMoveTo( x, playerRow ) )
 	{
+		playerVx = dx;
+		playerVy = 0;
+
 		playerCol = x;
 		moveToBorder( 0, dy );
 	}
 	else if( canMoveTo( playerCol, y ) )
 	{
+		playerVx = 0;
+		playerVy = dy;
+
 		playerRow = y;
 		moveToBorder( dx, 0 );
 	}
@@ -134,12 +263,50 @@ function moveToPointer( mapLeft, mapTop )
 		moveToBorder( dx, dy );
 }
 
+function drawSprite( sprite, x, y )
+{
+	ctx.drawImage(
+		sprite,
+		x-sprite.centerX,
+		y-sprite.centerY );
+}
+
 function drawPlayer( x, y )
 {
-	ctx.fillStyle = '#811';
-	ctx.beginPath();
-	ctx.arc( x, y, playerRadius, 0, 6.28, false );
-	ctx.fill();
+	var sprite;
+
+	if( (playerVx != 0 || playerVy != 0) &&
+		now-playerWalkLast > playerWalkFrequency )
+	{
+		if( (playerWalk = ++playerWalk % 3) < 1 )
+			playerWalk = 1;
+
+		playerWalkLast = now;
+	}
+
+	if( playerVx != 0 )
+	{
+		if( playerVx == 0 )
+			sprite = "DownStand";
+		else if( playerVx > 0 )
+			sprite = "RightWalk"+playerWalk;
+		else
+			sprite = "LeftWalk"+playerWalk;
+	}
+	else
+	{
+		if( playerVy == 0 )
+			sprite = "DownStand";
+		else if( playerVy > 0 )
+			sprite = "DownWalk"+playerWalk;
+		else
+			sprite = "UpWalk"+playerWalk;
+	}
+
+	drawSprite(
+		sprites["surfaceAstronaut"+sprite],
+		x,
+		y );
 }
 
 function drawMap( mapLeft, mapTop )
@@ -191,95 +358,51 @@ function drawMap( mapLeft, mapTop )
 		for( var x = mapLeft, col = startCol;
 			col < cols;
 			++col, x += cellSize, ++idx )
-		{
-			var color;
-
-			switch( map[idx] )
-			{
-				case 0:
-					color = '#e8e8e8';
-					break;
-				case 1:
-					color = '#f8f8f8';
-					break;
-			}
-
-			ctx.fillStyle = color;
-			ctx.fillRect( x, y, size, size );
-		}
+			ctx.drawImage(
+				map[idx].sprite,
+				x,
+				y );
 }
 
 function draw()
 {
 	var playerX = playerCol*cellSize,
 		playerY = playerRow*cellSize,
-		mapLeft = centerX-playerX,
+		mapLeft,
+		mapTop;
+
+	if( mapWidth > width )
+	{
+		mapLeft = centerX-playerX;
+
+		if( mapLeft > 0 )
+			mapLeft = 0;
+		else if( mapLeft+mapWidth < width )
+			mapLeft = width-mapWidth;
+	}
+	else
+		mapLeft = width-mapWidth >> 1;
+
+	if( mapHeight > height )
+	{
 		mapTop = centerY-playerY;
 
-	if( mapTop > 0 )
-		mapTop = 0;
-	else if( mapTop+mapHeight < height )
-		mapTop = height-mapHeight;
-
-	if( mapLeft > 0 )
-		mapLeft = 0;
-	else if( mapLeft+mapWidth < width )
-		mapLeft = width-mapWidth;
+		if( mapTop > 0 )
+			mapTop = 0;
+		else if( mapTop+mapHeight < height )
+			mapTop = height-mapHeight;
+	}
+	else
+		mapTop = height-mapHeight >> 1;
 
 	ctx.clearRect( 0, 0, width, height );
 
 	drawMap( mapLeft, mapTop );
-	drawPlayer( mapLeft+playerX, mapTop+playerY );
 
 	if( pointerSet )
 		moveToPointer( mapLeft, mapTop );
-}
 
-function input()
-{
-	if( keysDown[37] )
-		moveBy( -step, 0 );
-	else if( keysDown[39] )
-		moveBy( step, 0 );
-
-	if( keysDown[38] )
-		moveBy( 0, -step );
-	else if( keysDown[40] )
-		moveBy( 0, step );
-}
-
-function run()
-{
-	input();
-	draw();
-
-	requestAnimFrame( run );
-}
-
-function generate()
-{
-	var cells = mapCols*mapRows;
-
-	for( var n = cells; n--; )
-		map[n] = Math.random()*2 | 0;
-
-	--cells;
-
-	for( ;; )
-	{
-		var idx = Math.random()*cells | 0;
-
-		if( map[idx] != 1 )
-			continue;
-
-		playerRow = idx/mapCols | 0;
-		playerCol = idx-playerRow*mapCols;
-
-		playerRow += .5;
-		playerCol += .5;
-
-		break;
-	}
+	drawPlayer( mapLeft+playerX, mapTop+playerY );
 }
 
 function moveBy( col, row )
@@ -290,21 +413,100 @@ function moveBy( col, row )
 		return;
 	}
 
+	playerVx = col;
+	playerVy = row;
+
 	playerCol += col;
 	playerRow += row;
 
-	var right = mapCols-step,
-		bottom = mapRows-step;
+	var right = mapCols-playerSizeInMap,
+		bottom = mapRows-playerSizeInMap;
 
-	if( playerCol < step )
-		playerCol = step;
+	if( playerCol < playerSizeInMap )
+		playerCol = playerSizeInMap;
 	else if( playerCol > right )
 		playerCol = right;
 
-	if( playerRow < step )
-		playerRow = step;
+	if( playerRow < playerSizeInMap )
+		playerRow = playerSizeInMap;
 	else if( playerRow > bottom )
 		playerRow = bottom;
+}
+
+function input()
+{
+	var s = step*factor;
+
+	playerVx =
+	playerVy = 0;
+
+	if( keysDown[37] )
+		moveBy( -s, 0 );
+	else if( keysDown[39] )
+		moveBy( s, 0 );
+
+	if( keysDown[38] )
+		moveBy( 0, -s );
+	else if( keysDown[40] )
+		moveBy( 0, s );
+}
+
+function run()
+{
+	now = new Date().getTime();
+	factor = (now-last)/16;
+	last = now;
+
+	input();
+	draw();
+
+	requestAnimFrame( run );
+}
+
+function generate()
+{
+	var cells = mapCells;
+
+	map.length = 0;
+
+	for( var n = cells; n--; )
+	{
+		var blocks,
+			sprite;
+
+		if( Math.random() > .5 )
+		{
+			sprite = sprites.surfaceEmpty;
+			blocks = false;
+		}
+		else
+		{
+			sprite = sprites.surfaceEntry;
+			blocks = true;
+		};
+
+		map[n] = {
+			blocks: blocks,
+			sprite: sprite  };
+	}
+
+	--cells;
+
+	for( ;; )
+	{
+		var idx = Math.random()*cells | 0;
+
+		if( map[idx].blocks )
+			continue;
+
+		playerRow = idx/mapCols | 0;
+		playerCol = idx-playerRow*mapCols;
+
+		playerRow += .5;
+		playerCol += .5;
+
+		break;
+	}
 }
 
 function setKey( ev, pressed )
@@ -372,6 +574,60 @@ function pointerDown( ev )
 	return true;
 }
 
+function scaleSprite( frame, rect, w, h )
+{
+	var c = document.createElement( "canvas" ),
+		x = c.getContext( "2d" ),
+		l = 0,
+		t = 0;
+
+	c.width = w;
+	c.height = h;
+
+	c.centerX = w >> 1;
+	c.centerY = h >> 1;
+
+	if( frame.mirror )
+	{
+		x.setTransform( -1, 0, 0, 1, 0, 0 );
+		l = -w;
+	}
+	else if( frame.upsideDown )
+	{
+		x.setTransform( -1, 0, 0, -1, 0, 0 );
+		l = -w;
+		t = -h;
+	}
+
+	x.drawImage(
+		atlas,
+		rect.x,
+		rect.y,
+		rect.w,
+		rect.h,
+		l,
+		t,
+		w,
+		h );
+
+	return c;
+}
+
+function scale( styleWidth )
+{
+	var scale = cellSize/resources.surfaceEmpty.rect.w;
+
+	for( var name in resources )
+	{
+		var res = resources[name],
+			rc = res.rect,
+			w = rc.w*scale | 0,
+			h = rc.h*scale | 0;
+
+		sprites[name] = scaleSprite( res, rc, w, h );
+	}
+}
+
 function resize()
 {
 	var w = window.innerWidth,
@@ -388,18 +644,55 @@ function resize()
 	centerX = width >> 1;
 	centerY = height >> 1;
 
-	cellSize = Math.min( width, height )/10 | 0;
-	playerRadius = cellSize*.25 | 0;
-	playerRadiusOnMap = 1/cellSize*playerRadius;
+	cellSize = Math.min(
+		resources.surfaceEmpty.rect.w,
+		Math.min( width, height )/6 | 0 );
+	playerSize = cellSize*.25 | 0;
+	playerSizeInMap = 1/cellSize*playerSize;
 
 	mapWidth = mapCols*cellSize;
 	mapHeight = mapRows*cellSize;
+
+	scale( w );
+	generate();
+
+	if( message.resizing )
+		message.style.display = "none";
+}
+
+function scheduleResize()
+{
+	if( resizeTimer )
+		clearTimeout( resizeTimer );
+
+	if( message.started )
+	{
+		message.resizing = true;
+		message.onclick = function( ev )
+		{
+			(ev || event).preventDefault();
+			return false;
+		};
+		message.innerHTML = "Resizing";
+		message.style.display = "block";
+	}
+
+	resizeTimer = setTimeout( resize, 200 );
 }
 
 function init()
 {
+	if( !atlas.complete ||
+		new Date().getTime()-last < 500 )
+	{
+		// give mobile browsers some time to settle
+		// their window.innerWidth/Height values
+		setTimeout( init, 500 );
+		return;
+	}
+
 	if( !(canvas = document.createElement( "canvas" )) ||
-		!(ctx = canvas.getContext( "2d" )) )
+		!(ctx = canvas.getContext( "2d", { alpha: false } )) )
 		return;
 
 	ratio =
@@ -411,34 +704,65 @@ function init()
 			ctx.backingStorePixelRatio ||
 			1);
 
-	window.onresize = resize;
+	window.onresize = scheduleResize;
 	resize();
 
-	canvas.onmousedown = pointerDown;
-	canvas.onmousemove = pointerMove;
-	canvas.onmouseup = pointerUp;
-	canvas.onmouseout = pointerUp;
+	var d = document;
+	d.body.appendChild( canvas );
 
-	if( "ontouchstart" in canvas )
+	message.innerHTML =
+		("ontouchstart" in d ? "Touch" : "Click")+
+		" to play!";
+
+	message.onclick = function( ev )
 	{
-		canvas.ontouchstart = pointerDown;
-		canvas.ontouchmove = pointerMove;
-		canvas.ontouchend = pointerUp;
+		message.style.display = "none";
+		message.started = true;
+
+		d.onkeydown = keyDown;
+		d.onkeyup = keyUp;
+
+		d.onmousedown = pointerDown;
+		d.onmousemove = pointerMove;
+		d.onmouseup = pointerUp;
+		d.onmouseout = pointerUp;
+
+		if( "ontouchstart" in d )
+		{
+			d.ontouchstart = pointerDown;
+			d.ontouchmove = pointerMove;
+			d.ontouchend = pointerUp;
+		}
+
+		run();
+
+		(ev || event).preventDefault();
+		return false;
+	};
+}
+
+function load()
+{
+	if( !(message = document.getElementById( "Message" )) )
+		return;
+
+	message.innerHTML = "Loading";
+
+	last = new Date().getTime();
+
+	if( atlas &&
+		atlas.complete )
+	{
+		init();
+		return;
 	}
 
-	document.onkeydown = keyDown;
-	document.onkeyup = keyUp;
-	document.body.appendChild( canvas );
-
-	generate();
-	run();
+	atlas = new Image();
+	atlas.src = "atlas.png";
+	atlas.onload = init;
 }
 
-window.onload = function()
-{
-	// give mobile browsers some time to settle on dimensions
-	setTimeout( init, 500 );
-}
+window.onload = load;
 
 </script>
 </body>
