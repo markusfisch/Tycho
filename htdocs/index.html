@@ -21,7 +21,7 @@ body
 	right: 0; bottom: 0;
 	background: #fff;
 	padding: 4em 1em 0;
-	font: 16pt sans-serif; color: #111;
+	font: 12pt sans-serif; color: #111;
 	font-weight: lighter;
 	letter-spacing: .2em;
 	line-height: 150%;
@@ -48,66 +48,101 @@ var requestAnimFrame =
 			window.setTimeout( callback, 16 );
 		},
 	resources = {
+		crystal:{
+			rect: {/*crystal*/x:604,y:266,w:71,h:52},
+		},
 		surfaceEmpty:{
-			rect: {/*surface-empty*/x:266,y:2,w:128,h:128},
+			rect: {/*surface-empty*/x:1322,y:2,w:128,h:128},
 		},
 		surfaceStones:{
 			blocks: true,
 			rect: {/*surface-stones*/x:2,y:2,w:128,h:128},
 		},
+		surfaceFlowers:{
+			blocks: true,
+			rect: {/*surface-flowers*/x:1058,y:2,w:128,h:128},
+		},
+		surfaceLeaves:{
+			blocks: true,
+			rect: {/*surface-leaves*/x:926,y:2,w:128,h:128},
+		},
+		surfaceRiverLeftRight:{
+			blocks: true,
+			rect: {/*surface-river-left-right*/x:662,y:2,w:128,h:128},
+		},
+		surfaceRiverTopDown:{
+			blocks: true,
+			rect: {/*surface-river-top-down*/x:134,y:2,w:128,h:128},
+		},
+		surfaceRiverLeftUp:{
+			blocks: true,
+			rect: {/*surface-river-left-up*/x:530,y:2,w:128,h:128},
+		},
+		surfaceRiverLeftDown:{
+			blocks: true,
+			rect: {/*surface-river-left-down*/x:794,y:2,w:128,h:128},
+		},
+		surfaceRiverRightUp:{
+			blocks: true,
+			rect: {/*surface-river-right-up*/x:266,y:2,w:128,h:128},
+		},
+		surfaceRiverRightDown:{
+			blocks: true,
+			rect: {/*surface-river-right-down*/x:398,y:2,w:128,h:128},
+		},
 		surfaceEntry:{
-			rect: {/*surface-entry*/x:134,y:2,w:128,h:128},
+			rect: {/*surface-entry*/x:1190,y:2,w:128,h:128},
 		},
 		surfaceAstronautDownStand:{
-			rect: {/*surface-astronaut-down-stand*/x:971,y:134,w:40,h:84},
+			rect: {/*surface-astronaut-down-stand*/x:396,y:266,w:40,h:84},
 		},
 		surfaceAstronautDownWalk0:{
-			rect: {/*surface-astronaut-down-walk0*/x:1058,y:134,w:39,h:80},
+			rect: {/*surface-astronaut-down-walk0*/x:483,y:266,w:39,h:80},
 		},
 		surfaceAstronautDownWalk1:{
-			rect: {/*surface-astronaut-down-walk1*/x:1015,y:134,w:39,h:81},
+			rect: {/*surface-astronaut-down-walk1*/x:440,y:266,w:39,h:81},
 		},
 		surfaceAstronautUpStand:{
-			rect: {/*surface-astronaut-up-stand*/x:927,y:134,w:40,h:86},
+			rect: {/*surface-astronaut-up-stand*/x:352,y:266,w:40,h:86},
 		},
 		surfaceAstronautUpWalk0:{
-			rect: {/*surface-astronaut-up-walk0*/x:883,y:134,w:40,h:86},
+			rect: {/*surface-astronaut-up-walk0*/x:308,y:266,w:40,h:86},
 		},
 		surfaceAstronautUpWalk1:{
-			rect: {/*surface-astronaut-up-walk1*/x:838,y:134,w:41,h:86},
+			rect: {/*surface-astronaut-up-walk1*/x:263,y:266,w:41,h:86},
 		},
 		surfaceAstronautRightWalk0:{
-			rect: {/*surface-astronaut-right-walk0*/x:1101,y:134,w:37,h:76},
+			rect: {/*surface-astronaut-right-walk0*/x:526,y:266,w:37,h:76},
 		},
 		surfaceAstronautRightWalk1:{
-			rect: {/*surface-astronaut-right-walk1*/x:1142,y:134,w:33,h:74},
+			rect: {/*surface-astronaut-right-walk1*/x:567,y:266,w:33,h:74},
 		},
 		surfaceAstronautLeftWalk0:{
 			mirror: true,
-			rect: {/*surface-astronaut-right-walk0*/x:1101,y:134,w:37,h:76},
+			rect: {/*surface-astronaut-right-walk0*/x:526,y:266,w:37,h:76},
 		},
 		surfaceAstronautLeftWalk1:{
 			mirror: true,
-			rect: {/*surface-astronaut-right-walk1*/x:1142,y:134,w:33,h:74},
+			rect: {/*surface-astronaut-right-walk1*/x:567,y:266,w:33,h:74},
 		},
 		beneathAstronautRightStand:{
-			rect: {/*beneath-astronaut-right-stand*/x:795,y:134,w:39,h:92},
+			rect: {/*beneath-astronaut-right-stand*/x:220,y:266,w:39,h:92},
 		},
 		beneathAstronautRightWalk0:{
 			rect: {/*beneath-astronaut-right-walk0*/x:1982,y:2,w:40,h:94},
 		},
 		beneathAstronautRightWalk1:{
-			rect: {/*beneath-astronaut-right-walk1*/x:662,y:134,w:43,h:92},
+			rect: {/*beneath-astronaut-right-walk1*/x:1982,y:134,w:43,h:92},
 		},
 		beneathAstronautRightWalk2:{
-			rect: {/*beneath-astronaut-right-walk2*/x:752,y:134,w:39,h:92},
+			rect: {/*beneath-astronaut-right-walk2*/x:177,y:266,w:39,h:92},
 		},
 		beneathAstronautRightWalk3:{
-			rect: {/*beneath-astronaut-right-walk3*/x:709,y:134,w:39,h:92},
+			rect: {/*beneath-astronaut-right-walk3*/x:134,y:266,w:39,h:92},
 		},
 		beneathAstronautLeftStand:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-stand*/x:795,y:134,w:39,h:92},
+			rect: {/*beneath-astronaut-right-stand*/x:220,y:266,w:39,h:92},
 		},
 		beneathAstronautLeftWalk0:{
 			mirror: true,
@@ -115,152 +150,189 @@ var requestAnimFrame =
 		},
 		beneathAstronautLeftWalk1:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-walk1*/x:662,y:134,w:43,h:92},
+			rect: {/*beneath-astronaut-right-walk1*/x:1982,y:134,w:43,h:92},
 		},
 		beneathAstronautLeftWalk2:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-walk2*/x:752,y:134,w:39,h:92},
+			rect: {/*beneath-astronaut-right-walk2*/x:177,y:266,w:39,h:92},
 		},
 		beneathAstronautLeftWalk3:{
 			mirror: true,
-			rect: {/*beneath-astronaut-right-walk3*/x:709,y:134,w:39,h:92},
+			rect: {/*beneath-astronaut-right-walk3*/x:134,y:266,w:39,h:92},
 		},
 		beneathEntry:{
-			rect: {/*beneath-entry*/x:1454,y:2,w:128,h:128},
+			rect: {/*beneath-entry*/x:662,y:134,w:128,h:128},
+		},
+		beneathExit:{
+			rect: {/*beneath-exit*/x:530,y:134,w:128,h:128},
 		},
 		beneathCorridor:{
-			rect: {/*beneath-corridor*/x:1850,y:2,w:128,h:128},
+			rect: {/*beneath-corridor*/x:1322,y:134,w:128,h:128},
 		},
 		beneathCorridorTopLeft:{
-			rect: {/*beneath-corridor-top-left*/x:134,y:134,w:128,h:128},
+			rect: {/*beneath-corridor-top-left*/x:1586,y:134,w:128,h:128},
 		},
 		beneathCorridorTopRight:{
-			rect: {/*beneath-corridor-top-right*/x:2,y:134,w:128,h:128},
+			rect: {/*beneath-corridor-top-right*/x:1454,y:134,w:128,h:128},
 		},
 		beneathCorridorLeftRight:{
-			rect: {/*beneath-corridor-left-right*/x:398,y:134,w:128,h:128},
+			rect: {/*beneath-corridor-left-right*/x:1850,y:134,w:128,h:128},
 		},
 		beneathCorridorLeftEnd:{
 			blocks: true,
-			rect: {/*beneath-corridor-left-end*/x:530,y:134,w:128,h:128},
+			rect: {/*beneath-corridor-left-end*/x:2,y:266,w:128,h:128},
 		},
 		beneathCorridorRightEnd:{
 			blocks: true,
-			rect: {/*beneath-corridor-right-end*/x:266,y:134,w:128,h:128},
+			rect: {/*beneath-corridor-right-end*/x:1718,y:134,w:128,h:128},
 		},
 		beneathDropLeft:{
-			rect: {/*beneath-drop-left*/x:1718,y:2,w:128,h:128},
+			rect: {/*beneath-drop-left*/x:1058,y:134,w:128,h:128},
+		},
+		beneathDropLeftWallTop:{
+			rect: {/*beneath-drop-left-wall-top*/x:1190,y:134,w:128,h:128},
 		},
 		beneathDropRight:{
-			rect: {/*beneath-drop-right*/x:1586,y:2,w:128,h:128},
+			rect: {/*beneath-drop-right*/x:794,y:134,w:128,h:128},
+		},
+		beneathDropRightWallTop:{
+			rect: {/*beneath-drop-right-wall-top*/x:926,y:134,w:128,h:128},
 		},
 		beneathWallTop:{
-			blocks: true,
-			rect: {/*beneath-wall-top*/x:398,y:2,w:128,h:128},
+			rect: {/*beneath-wall-top*/x:1454,y:2,w:128,h:128},
 		},
 		beneathWallBottom:{
-			blocks: true,
-			rect: {/*beneath-wall-bottom*/x:1322,y:2,w:128,h:128},
+			rect: {/*beneath-wall-bottom*/x:398,y:134,w:128,h:128},
 		},
 		beneathWallLeft:{
 			blocks: true,
-			rect: {/*beneath-wall-left*/x:926,y:2,w:128,h:128},
+			rect: {/*beneath-wall-left*/x:2,y:134,w:128,h:128},
 		},
 		beneathWallLeftTop:{
 			blocks: true,
-			rect: {/*beneath-wall-left-top*/x:1058,y:2,w:128,h:128},
+			rect: {/*beneath-wall-left-top*/x:134,y:134,w:128,h:128},
 		},
 		beneathWallLeftBottom:{
 			blocks: true,
-			rect: {/*beneath-wall-left-bottom*/x:1190,y:2,w:128,h:128},
+			rect: {/*beneath-wall-left-bottom*/x:266,y:134,w:128,h:128},
 		},
 		beneathWallRight:{
 			blocks: true,
-			rect: {/*beneath-wall-right*/x:530,y:2,w:128,h:128},
+			rect: {/*beneath-wall-right*/x:1586,y:2,w:128,h:128},
 		},
 		beneathWallRightTop:{
 			blocks: true,
-			rect: {/*beneath-wall-right-top*/x:662,y:2,w:128,h:128},
+			rect: {/*beneath-wall-right-top*/x:1718,y:2,w:128,h:128},
 		},
 		beneathWallRightBottom:{
 			blocks: true,
-			rect: {/*beneath-wall-right-bottom*/x:794,y:2,w:128,h:128},
+			rect: {/*beneath-wall-right-bottom*/x:1850,y:2,w:128,h:128},
 		} },
+	surfaceSymbols = {
+		" ":"surfaceEmpty",
+		"s":"surfaceStones",
+		"f":"surfaceFlowers",
+		"l":"surfaceLeaves",
+		"A":"surfaceEntry",
+		"B":"surfaceEntry",
+		"C":"surfaceEntry",
+		"D":"surfaceEntry",
+		"E":"surfaceEntry",
+		"F":"surfaceEntry",
+		"-":"surfaceRiverLeftRight",
+		"|":"surfaceRiverTopDown",
+		")":"surfaceRiverLeftUp",
+		"]":"surfaceRiverLeftDown",
+		"(":"surfaceRiverRightUp",
+		"[":"surfaceRiverRightDown"},
+	beneathSymbols = {
+		" ": null,
+		"E":"beneathEntry",
+		"X":"beneathExit",
+		"=":"beneathCorridorLeftRight",
+		"[":"beneathCorridorLeftEnd",
+		"]":"beneathCorridorRightEnd",
+		"´":"beneathCorridorTopLeft",
+		"`":"beneathCorridorTopRight",
+		"~":"beneathCorridor",
+		":":"beneathDropLeftWallTop",
+		"<":"beneathDropLeft",
+		";":"beneathDropRightWallTop",
+		">":"beneathDropRight",
+		"T":"beneathWallTop",
+		"_":"beneathWallBottom",
+		"l":"beneathWallLeft",
+		"(":"beneathWallLeftTop",
+		"{":"beneathWallLeftBottom",
+		"r":"beneathWallRight",
+		")":"beneathWallRightTop",
+		"}":"beneathWallRightBottom" },
 	levels = [
+		// level 1
 		{
 			sideView: false,
 			cols: 16,
 			rows: 16,
 			x: 7,
 			y: 7,
-			map: [
-				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
-				0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-				0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0,
-				0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
-				0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,
-				0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-				0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0,
-				0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0,
-				0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			symbols: [
-				/*0*/"surfaceEmpty",
-				/*1*/"surfaceStones",
-				/*2*/"surfaceEntry"],
-			actions: [
-				/*0*/null,
-				/*1*/null,
-				/*2*/function( col, row )
+			symbols: surfaceSymbols,
+			map:
+				"-] f     l      "+
+				" |     s        "+
+				" |sl B     s    "+
+				" | f   f        "+
+				" (-------]    s "+
+				"      f  (-]f   "+
+				"    s  s   (----"+
+				"     s   F  sf  "+
+				"  s  f      l   "+
+				"       s  f     "+
+				" l  s  l     A  "+
+				"----]      l s  "+
+				"    |s   f   [--"+
+				" [--)      [-)  "+
+				" | f   f s |l   "+
+				" |    fl   |    ",
+			actions: {
+				"A":function( col, row )
+				{
+					playerCol = 5.5;
+					playerRow = 3.5;
+				},
+				"B":function( col, row )
+				{
+					playerCol = 13.5;
+					playerRow = 9.5;
+				},
+				"F":function( col, row )
 				{
 					loadLevel( {
 						sideView: true,
-						cols: 6,
-						rows: 6,
+						cols: 10,
+						rows: 4,
 						x: 1,
 						y: 0,
-						map: [
-							1, 2, 8,10,16, 0,
-							0, 0,12, 7,15, 0,
-							0, 0,12, 7,15, 0,
-							0, 0,14,11,17, 0,
-							0, 0, 0, 0, 0, 0,
-							0, 0, 0, 0, 0, 0],
-						symbols: [
-							/*00*/null,
-							/*01*/"beneathEntry",
-							/*02*/"beneathCorridorLeftRight",
-							/*03*/"beneathCorridorLeftEnd",
-							/*04*/"beneathCorridorRightEnd",
-							/*05*/"beneathCorridorTopLeft",
-							/*06*/"beneathCorridorTopRight",
-							/*07*/"beneathCorridor",
-							/*08*/"beneathDropLeft",
-							/*09*/"beneathDropRight",
-							/*10*/"beneathWallTop",
-							/*11*/"beneathWallBottom",
-							/*12*/"beneathWallLeft",
-							/*13*/"beneathWallLeftTop",
-							/*14*/"beneathWallLeftBottom",
-							/*15*/"beneathWallRight",
-							/*16*/"beneathWallRightTop",
-							/*17*/"beneathWallRightBottom"],
-						actions: [
-							/*0*/null,
-							/*1*/function()
+						symbols: beneathSymbols,
+						map:
+							"E=;TTTT)  "+
+							"  l~~~~r  "+
+							"  l~~~<`=]"+
+							"  {___}   ",
+						items: crystals,
+						actions: {
+							"E":function()
 							{
 								loadLevel( levels[0], col, row );
-							}]
+							} }
 					} );
-				}]
+				} }
 		}
 		],
+	crystals = [
+		0,0,1,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,1,0,
+		0,0,0,1,0,0,0,0,0,0],
 	message,
 	atlas,
 	sprites = {},
@@ -293,18 +365,44 @@ var requestAnimFrame =
 	playerRow,
 	playerVx,
 	playerVy,
-	playerFallSpeed = 0,
+	playerLastVx = 0,
 	playerWalk = 0,
 	playerWalkLast = 0,
 	playerWalkFrequency = 96,
 	playerSize,
 	playerSizeInMap,
+	playerGravitiy,
 	step = .0625;
+
+function checkEnd()
+{
+	for( var n = mapCells; n--; )
+		if( crystals[n] > 0 )
+			break;
+
+	if( n < 0 )
+	{
+		message.onclick = function( ev )
+		{
+			(ev || event).preventDefault();
+			return false;
+		};
+		message.innerHTML = "You did it!";
+		message.style.display = "block";
+	}
+}
 
 function enter()
 {
 	var idx = (playerRow | 0)*mapCols+(playerCol | 0),
 		field = map[idx];
+
+	if( field.item )
+	{
+		field.item = null;
+		crystals[idx] = 0;
+		checkEnd();
+	}
 
 	if( field.action )
 		field.action( playerCol, playerRow-1 );
@@ -318,10 +416,11 @@ function cell( col, row )
 	{
 		var field = map[idx];
 
-		if( !field )
+		if( !field ||
+			!field.sprite )
 			return false;
 
-		return !field.blocks;
+		return !field.sprite.blocks;
 	}
 
 	return false;
@@ -360,9 +459,7 @@ function moveTo( col, row )
 	else if( col > mapCols-playerSizeInMap )
 		col = mapCols-playerSizeInMap;
 
-	if( playerFallSpeed )
-		row = playerRow;
-	else if( row < playerSizeInMap )
+	if( row < playerSizeInMap )
 		row = playerSizeInMap;
 	else if( row > mapRows-playerSizeInMap )
 		row = mapRows-playerSizeInMap;
@@ -383,6 +480,9 @@ function moveTo( col, row )
 
 	if( !mapSideView )
 		y += dy;
+	else if( dy < 0 &&
+		playerGravitiy > .21 )
+		playerGravitiy -= .44;
 
 	if( canMoveTo( x, y ) )
 	{
@@ -435,12 +535,19 @@ function drawPlayer( x, y )
 	{
 		if( playerVx == 0 )
 			sprite = mapSideView ?
-				"LeftStand" :
+				(playerLastVx < 0 ?
+					"LeftStand" :
+					"RightStand") :
 				"DownStand";
-		else if( playerVx > 0 )
-			sprite = "RightWalk"+playerWalk;
 		else
-			sprite = "LeftWalk"+playerWalk;
+		{
+			if( playerVx > 0 )
+				sprite = "RightWalk"+playerWalk;
+			else
+				sprite = "LeftWalk"+playerWalk;
+
+			playerLastVx = playerVx;
+		}
 	}
 	else
 	{
@@ -510,10 +617,18 @@ function drawMap( left, top )
 			col < cols;
 			++col, x += cellSize, ++idx )
 		{
-			var sprite = map[idx].sprite;
+			var m = map[idx],
+				sprite = m.sprite,
+				item = m.item;
 
 			if( sprite )
 				ctx.drawImage( sprite, x, y );
+
+			if( item )
+				drawSprite(
+					item,
+					x+sprite.centerX,
+					y+sprite.centerY );
 		}
 }
 
@@ -570,34 +685,40 @@ function input()
 	else if( keysDown[40] )
 		y += s;
 
-	if( mapSideView && y < 0 )
-		playerFallSpeed = -.025;
-
 	if( x || y )
 		moveTo( playerCol+x, playerRow+y );
 }
 
 function gravity()
 {
-	if( !canMoveTo( playerCol, playerRow+1 ) )
-		return;
+	if( playerGravitiy < .25 )
+		playerGravitiy += .01;
 
-	if( !playerFallSpeed )
-		playerFallSpeed = .025;
-	else if( playerFallSpeed < 1 )
-		playerFallSpeed = Math.max(
-			playerFallSpeed > 0 ? 1 : -1,
-			playerFallSpeed*1.05 );
+	if( playerGravitiy > .25 )
+		playerGravitiy = .25;
 
-	var row = playerRow+playerFallSpeed*factor;
+	var x = playerCol,
+		y = playerRow+playerGravitiy,
+		dx = 0,
+		dy = playerGravitiy;
 
-	if( !canMoveTo( playerCol, row ) )
+	if( canMoveTo( x, y ) )
 	{
-		moveToBorder( playerCol, row );
-		playerFallSpeed = 0;
+		playerCol = x;
+		playerRow = y;
+	}
+	else if( canMoveTo( x, playerRow ) )
+	{
+		playerCol = x;
+		moveToBorder( 0, dy );
+	}
+	else if( canMoveTo( playerCol, y ) )
+	{
+		playerRow = y;
+		moveToBorder( dx, 0 );
 	}
 	else
-		playerRow = row;
+		moveToBorder( dx, dy );
 }
 
 function run()
@@ -621,10 +742,6 @@ function run()
 
 function loadLevel( level, x, y )
 {
-	var lm = level.map,
-		ls = level.symbols,
-		la = level.actions;
-
 	map.length = 0;
 
 	mapCols = level.cols;
@@ -632,27 +749,38 @@ function loadLevel( level, x, y )
 	mapCells = mapCols*mapRows;
 	mapSideView = level.sideView;
 
+	playerSize = sprites[mapSideView ?
+		"beneathAstronautRightStand" :
+		"surfaceAstronautDownStand"].height >> 1;
+	playerSizeInMap = 1/cellSize*playerSize;
+
 	playerCol = ((typeof x === "undefined" ? level.x : x) | 0)+.5;
 	playerRow = ((typeof y === "undefined" ? level.y : y) | 0)+
 		(mapSideView ? .6 : .5);
 
-	playerFallSpeed =
 	playerWalk =
 	playerWalkLast = 0;
+	playerGravitiy = 1;
 
 	mapWidth = mapCols*cellSize;
 	mapHeight = mapRows*cellSize;
 	mapLeft = width-mapWidth >> 1;
 	mapTop = height-mapHeight >> 1;
 
-	for( var n = lm.length; n--; )
+	var m = level.map,
+		i = level.items || [],
+		s = level.symbols,
+		a = level.actions;
+
+	for( var n = m.length; n--; )
 	{
-		var symbol = lm[n],
-			sprite = sprites[ls[symbol]];
+		var symbol = m.charAt( n ),
+			sprite = sprites[s[symbol]];
 
 		map[n] = {
+			item: i[n] ? sprites.crystal : null,
 			sprite: sprite,
-			action: la[symbol] };
+			action: a[symbol] };
 	}
 }
 
@@ -730,6 +858,7 @@ function scaleSprite( frame, rect, w, h )
 
 	c.width = w;
 	c.height = h;
+	c.blocks = frame.blocks;
 
 	c.centerX = w >> 1;
 	c.centerY = h >> 1;
@@ -855,8 +984,7 @@ function init()
 	d.body.appendChild( canvas );
 
 	message.innerHTML =
-		("ontouchstart" in d ? "Touch" : "Click")+
-		" to play!";
+		("ontouchstart" in d ? "Touch" : "Click")+" me";
 
 	message.onclick = function( ev )
 	{
