@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-<title>(LD29)</title>
+<title>Tycho</title>
 <style>
 
 body
@@ -271,38 +271,44 @@ var requestAnimFrame =
 		// level 1
 		{
 			sideView: false,
-			cols: 16,
-			rows: 16,
-			x: 7,
-			y: 7,
+			cols: 12,
+			rows: 12,
+			x: 5,
+			y: 5,
 			symbols: surfaceSymbols,
 			map:
-				"-] f     l      "+
-				" |     s        "+
-				" |sl B     s    "+
-				" | f   f        "+
-				" (-------]    s "+
-				"      f  (-]f   "+
-				"    s  s   (----"+
-				"     s   F  sf  "+
-				"  s  f      l   "+
-				"       s  f     "+
-				" l  s  l     A  "+
-				"----]      l s  "+
-				"    |s   f   [--"+
-				" [--)      [-)  "+
-				" | f   f s |l   "+
-				" |    fl   |    ",
+				"  |   Bs    "+
+				"  (--]    l "+
+				"l    (--]   "+
+				" A      |  l"+
+				" s      |C  "+
+				"        (---"+
+				"----] l     "+
+				"  D (--]    "+
+				" s    s|    "+
+				"  l    |  l "+
+				"    s  | s  "+
+				" l F   |   s",
 			actions: {
 				"A":function( col, row )
 				{
-					playerCol = 5.5;
-					playerRow = 3.5;
+					playerCol = 6.5;
+					playerRow = 1.5;
 				},
 				"B":function( col, row )
 				{
-					playerCol = 13.5;
-					playerRow = 9.5;
+					playerCol = 1.5;
+					playerRow = 2.5;
+				},
+				"C":function( col, row )
+				{
+					playerCol = 2.5;
+					playerRow = 8.5;
+				},
+				"D":function( col, row )
+				{
+					playerCol = 10.5;
+					playerRow = 3.5;
 				},
 				"F":function( col, row )
 				{
