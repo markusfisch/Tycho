@@ -277,17 +277,17 @@ var requestAnimFrame =
 			y: 5,
 			symbols: surfaceSymbols,
 			map:
-				"  |   Bs    "+
+				"  |   Bs f  "+
 				"  (--]    l "+
 				"l    (--]   "+
 				" A      |  l"+
 				" s      |C  "+
 				"        (---"+
-				"----] l     "+
+				"----] l   f "+
 				"  D (--]    "+
 				" s    s|    "+
 				"  l    |  l "+
-				"    s  | s  "+
+				"f   s  | s  "+
 				" l F   |   s",
 			actions: {
 				"A":function( col, row )
@@ -522,8 +522,8 @@ function drawSprite( sprite, x, y )
 {
 	ctx.drawImage(
 		sprite,
-		x-sprite.centerX,
-		y-sprite.centerY );
+		(x-sprite.centerX) | 0,
+		(y-sprite.centerY) | 0 );
 }
 
 function drawPlayer( x, y )
@@ -578,7 +578,7 @@ function drawMap( left, top )
 	var size = cellSize+1,
 		startCol = 0,
 		skip = 0,
-		y = mapTop,
+		y = top | 0,
 		row = 0,
 		idx = 0,
 		cols = mapCols,
@@ -619,7 +619,7 @@ function drawMap( left, top )
 	for( ;
 		row < rows;
 		++row, y += cellSize, idx += skip )
-		for( var x = left, col = startCol;
+		for( var x = left | 0, col = startCol;
 			col < cols;
 			++col, x += cellSize, ++idx )
 		{
@@ -628,7 +628,7 @@ function drawMap( left, top )
 				item = m.item;
 
 			if( sprite )
-				ctx.drawImage( sprite, x, y );
+				ctx.drawImage( sprite, x | 0, y | 0 );
 
 			if( item )
 				drawSprite(
@@ -818,18 +818,18 @@ function setPointer( ev )
 	{
 		var t = e.touches[0];
 
-		pointerX = t.pageX;
-		pointerY = t.pageY;
+		pointerX = t.pageX*ratio;
+		pointerY = t.pageY*ratio;
 	}
 	else if( "clientX" in e )
 	{
-		pointerX = e.clientX;
-		pointerY = e.clientY;
+		pointerX = e.clientX*ratio;
+		pointerY = e.clientY*ratio;
 	}
 	else
 	{
-		pointerX = e.pageX;
-		pointerY = e.pageY;
+		pointerX = e.pageX*ratio;
+		pointerY = e.pageY*ratio;
 	}
 }
 
@@ -883,14 +883,14 @@ function scaleSprite( frame, rect, w, h )
 
 	x.drawImage(
 		atlas,
-		rect.x,
-		rect.y,
-		rect.w,
-		rect.h,
-		l,
-		t,
-		w,
-		h );
+		rect.x | 0,
+		rect.y | 0,
+		rect.w | 0,
+		rect.h | 0,
+		l | 0,
+		t | 0,
+		w | 0,
+		h | 0 );
 
 	return c;
 }
