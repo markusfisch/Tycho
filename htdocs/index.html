@@ -267,9 +267,13 @@ var requestAnimFrame =
 		"r":"beneathWallRight",
 		")":"beneathWallRightTop",
 		"}":"beneathWallRightBottom" },
-	levels = [
-		// level 1
-		{
+	crystals = [
+		0,0,1,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,1,0,
+		0,0,0,1,0,0,0,0,0,0],
+	levels = {
+		surface1: {
 			sideView: false,
 			cols: 12,
 			rows: 12,
@@ -290,55 +294,55 @@ var requestAnimFrame =
 				"f   s  | s  "+
 				" l F   |   s",
 			actions: {
-				"A":function( col, row )
+				"A":function()
 				{
 					playerCol = 6.5;
 					playerRow = 1.5;
 				},
-				"B":function( col, row )
+				"B":function()
 				{
 					playerCol = 1.5;
 					playerRow = 2.5;
 				},
-				"C":function( col, row )
+				"C":function()
 				{
 					playerCol = 2.5;
 					playerRow = 8.5;
 				},
-				"D":function( col, row )
+				"D":function()
 				{
 					playerCol = 10.5;
 					playerRow = 3.5;
 				},
-				"F":function( col, row )
+				"F":function()
 				{
-					loadLevel( {
-						sideView: true,
-						cols: 10,
-						rows: 4,
-						x: 1,
-						y: 0,
-						symbols: beneathSymbols,
-						map:
-							"E=;TTTT)  "+
-							"  l~~~~r  "+
-							"  l~~~<`=]"+
-							"  {___}   ",
-						items: crystals,
-						actions: {
-							"E":function()
-							{
-								loadLevel( levels[0], col, row );
-							} }
-					} );
+					var l = levels.surface1;
+
+					l.x = 3;
+					l.y = 10;
+
+					loadLevel( levels.beneath1 );
 				} }
-		}
-		],
-	crystals = [
-		0,0,1,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,1,0,
-		0,0,0,1,0,0,0,0,0,0],
+		},
+		beneath1: {
+			sideView: true,
+			cols: 10,
+			rows: 4,
+			x: 1,
+			y: 0,
+			symbols: beneathSymbols,
+			map:
+				"E=;TTTT)  "+
+				"  l~~~~r  "+
+				"  l~~~<`=]"+
+				"  {___}   ",
+			items: crystals,
+			actions: {
+				"E":function()
+				{
+					loadLevel( levels.surface1 );
+				} }
+		} },
 	message,
 	atlas,
 	sprites = {},
@@ -746,7 +750,7 @@ function run()
 	requestAnimFrame( run );
 }
 
-function loadLevel( level, x, y )
+function loadLevel( level )
 {
 	map.length = 0;
 
@@ -760,9 +764,8 @@ function loadLevel( level, x, y )
 		"surfaceAstronautDownStand"].height >> 1;
 	playerSizeInMap = 1/cellSize*playerSize;
 
-	playerCol = ((typeof x === "undefined" ? level.x : x) | 0)+.5;
-	playerRow = ((typeof y === "undefined" ? level.y : y) | 0)+
-		(mapSideView ? .6 : .5);
+	playerCol = (level.x | 0)+.5;
+	playerRow = (level.y | 0)+(mapSideView ? .6 : .5);
 
 	playerWalk =
 	playerWalkLast = 0;
@@ -933,7 +936,7 @@ function resize()
 	playerSizeInMap = 1/cellSize*playerSize;
 
 	scale( w );
-	loadLevel( levels[0] );
+	loadLevel( levels.surface1 );
 
 	if( message.resizing )
 		message.style.display = "none";
@@ -965,7 +968,7 @@ function init()
 		new Date().getTime()-last < 500 )
 	{
 		// give mobile browsers some time to settle
-		// their window.innerWidth/Height values
+		// their window.innerWidth/innerHeight values
 		setTimeout( init, 500 );
 		return;
 	}
