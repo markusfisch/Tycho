@@ -11,6 +11,7 @@ body
 	background: #000;
 	margin: 0; padding: 0;
 	overflow: hidden;
+	-ms-touch-action: none;
 }
 
 #Message
@@ -32,17 +33,17 @@ body
 </style>
 </head>
 <body>
-<div id="Message">Initializing</div>
+<div id="Message">Initializing...</div>
 <script>
 
 "use strict";
 
 var requestAnimFrame =
+		window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
 		window.msRequestAnimationFrame ||
 		window.oRequestAnimationFrame ||
-		window.requestAnimationFrame ||
 		function( callback )
 		{
 			window.setTimeout( callback, 16 );
@@ -1027,7 +1028,7 @@ function load()
 	if( !(message = document.getElementById( "Message" )) )
 		return;
 
-	message.innerHTML = "Loading";
+	message.innerHTML = "Loading...";
 
 	last = new Date().getTime();
 
