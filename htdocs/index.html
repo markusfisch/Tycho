@@ -4,6 +4,8 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 <title>Tycho</title>
+<link rel="shortcut icon" href="icon.png"/>
+<link rel="apple-touch-icon-precomposed" href="icon.png"/>
 <style>
 
 body
@@ -838,10 +840,11 @@ function setPointers( ev, down )
 {
 	var e = ev || event;
 
-	if( !down )
+	if( down < 1 )
 	{
-		// process other touches
-		if( e.touches &&
+		// process remaining touches
+		if( pointerLength > 0 &&
+			e.touches &&
 			(down = e.touches.length) )
 			return setPointers( e, down );
 
@@ -961,8 +964,8 @@ function scale( styleWidth )
 	{
 		var res = resources[name],
 			rc = res.rect,
-			w = rc.w*scale | 0,
-			h = rc.h*scale | 0;
+			w = Math.max( rc.w*scale | 0, 1 ),
+			h = Math.max( rc.h*scale | 0, 1 );
 
 		sprites[name] = scaleSprite( res, rc, w, h );
 	}
