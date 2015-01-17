@@ -758,6 +758,8 @@ function gravity()
 
 function run()
 {
+	requestAnimFrame( run );
+
 	now = new Date().getTime();
 	factor = (now-last)/16;
 	last = now;
@@ -784,8 +786,6 @@ function run()
 	enter();
 	input();
 	draw();
-
-	requestAnimFrame( run );
 }
 
 function loadLevel( level )
