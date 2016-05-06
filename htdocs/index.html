@@ -604,8 +604,7 @@ function drawPlayer( x, y )
 
 function drawMap( left, top )
 {
-	var size = cellSize+1,
-		startCol = 0,
+	var startCol = 0,
 		skip = 0,
 		y = top | 0,
 		row = 0,
@@ -692,7 +691,8 @@ function draw()
 			mapTop = height-mapHeight;
 	}
 
-	ctx.clearRect( 0, 0, width, height );
+	ctx.fillStyle = "#000";
+	ctx.fillRect( 0, 0, width, height );
 
 	drawMap( mapLeft, mapTop );
 
@@ -711,14 +711,14 @@ function input()
 		y = 0;
 
 	if( keysDown[37] )
-		x -= s;
+		x = -s;
 	else if( keysDown[39] )
-		x += s;
+		x = s;
 
 	if( keysDown[38] )
-		y -= s;
+		y = -s;
 	else if( keysDown[40] )
-		y += s;
+		y = s;
 
 	if( x || y )
 		moveTo( playerCol+x, playerRow+y );
@@ -956,7 +956,7 @@ function scaleSprite( frame, rect, w, h )
 	return c;
 }
 
-function scale( styleWidth )
+function scale()
 {
 	var scale = cellSize/resources.surfaceEmpty.rect.w;
 
@@ -991,7 +991,7 @@ function resize()
 		resources.surfaceEmpty.rect.w,
 		Math.min( width, height )/6 | 0 );
 
-	scale( w );
+	scale();
 	loadLevel( levels.surface1 );
 
 	if( message.resizing )
